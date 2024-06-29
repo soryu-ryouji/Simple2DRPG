@@ -18,6 +18,10 @@ namespace Simple2DRPG
         [SerializeField] private LayerMask _groundLayer;
         private bool _isGrounded;
 
+        private float _dashSpeed = 20;
+        private float _dashDuration = 0.3f;
+        private float _dashTime = 0;
+
         private void Awake()
         {
             _animator = this.transform.GetComponentInChildren<Animator>();
@@ -29,12 +33,21 @@ namespace Simple2DRPG
             Move();
             CheckInput();
             CheckGround();
+
+            _dashTime -= Time.deltaTime;
+
+            if (Input.GetKeyDown(KeyCode.LeftShift)) _dashTime = _dashDuration;
+            if (_dashTime > 0)
+            {
+
+            }
             CheckAnim();
         }
 
         public void Move()
         {
-            _rigid.velocity = new Vector2(_horizontalInput * _moveSpeed, _rigid.velocity.y);
+            if (_dashTime > 0) _rigid.velocity = new Vector2(_horizontalInput * _dashSpeed, 0);
+            else _rigid.velocity = new Vector2(_horizontalInput * _moveSpeed, _rigid.velocity.y);
         }
 
         public void Jump()
@@ -52,9 +65,9 @@ namespace Simple2DRPG
         private void CheckAnim()
         {
             CheckFlip();
-            _animator.SetFloat("YVelocity",_rigid.velocity.y);
+            _animator.SetFloat("YVelocity", _rigid.velocity.y);
             _animator.SetBool("IsMoving", _horizontalInput != 0);
-
+            _animator.SetBool("IsDashing", _dashTime > 0);
             _animator.SetBool("IsGrounded", _isGrounded);
         }
 
