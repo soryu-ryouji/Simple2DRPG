@@ -22,6 +22,14 @@ namespace Simple2DRPG
         private float _dashDuration = 0.3f;
         private float _dashTime = 0;
 
+        private float _dashCooldown = 1;
+        private float _dashCooldownTimer;
+
+        private bool _isAttacking;
+        private int _comboCounter;
+        private float _comboTime = 1;
+        private float _comboTimeWindow;
+
         private void Awake()
         {
             _animator = this.transform.GetComponentInChildren<Animator>();
@@ -35,18 +43,25 @@ namespace Simple2DRPG
             CheckGround();
 
             _dashTime -= Time.deltaTime;
+            _dashCooldownTimer -= Time.deltaTime;
+            _comboTimeWindow -= Time.deltaTime;
 
-            if (Input.GetKeyDown(KeyCode.LeftShift)) _dashTime = _dashDuration;
-            if (_dashTime > 0)
-            {
-
-            }
             CheckAnim();
+        }
+
+        private void Dash()
+        {
+            if (_dashCooldownTimer < 0 && !_isAttacking)
+            {
+                _dashCooldownTimer = _dashCooldown;
+                _dashTime = _dashDuration;
+            }
         }
 
         public void Move()
         {
-            if (_dashTime > 0) _rigid.velocity = new Vector2(_horizontalInput * _dashSpeed, 0);
+            if (_isAttacking) _rigid.velocity = new Vector2(0, 0);
+            else if (_dashTime > 0) _rigid.velocity = new Vector2(FacingDirection * _dashSpeed, 0);
             else _rigid.velocity = new Vector2(_horizontalInput * _moveSpeed, _rigid.velocity.y);
         }
 
@@ -60,6 +75,25 @@ namespace Simple2DRPG
             _horizontalInput = Input.GetAxis("Horizontal");
 
             if (Input.GetKeyDown(KeyCode.Space)) Jump();
+            if (Input.GetKeyDown(KeyCode.LeftShift)) Dash();
+
+            if (Input.GetKeyDown(KeyCode.J)) Attack();
+        }
+
+        private void Attack()
+        {
+            if (!_isGrounded) return;
+
+            if (_comboTimeWindow < 0) _comboCounter = 0;
+            _isAttacking = true;
+            _comboTimeWindow = _comboTime;
+        }
+
+        public void AttackOver()
+        {
+            _isAttacking = false;
+            _comboCounter++;
+            if (_comboCounter > 2) _comboCounter = 0;
         }
 
         private void CheckAnim()
@@ -69,6 +103,9 @@ namespace Simple2DRPG
             _animator.SetBool("IsMoving", _horizontalInput != 0);
             _animator.SetBool("IsDashing", _dashTime > 0);
             _animator.SetBool("IsGrounded", _isGrounded);
+
+            _animator.SetBool("IsAttacking", _isAttacking);
+            _animator.SetInteger("ComboCounter", _comboCounter);
         }
 
         private void Flip()
