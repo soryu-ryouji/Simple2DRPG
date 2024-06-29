@@ -1,6 +1,3 @@
-using System;
-using System.ComponentModel;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Simple2DRPG
@@ -16,6 +13,11 @@ namespace Simple2DRPG
 
         public int FacingDirection { get; private set; } = 1;
 
+        [Header("Ground Check info")]
+        [SerializeField] private float _groundCheckDistance = 1.4f;
+        [SerializeField] private LayerMask _groundLayer;
+        private bool _isGrounded;
+
         private void Awake()
         {
             _animator = this.transform.GetComponentInChildren<Animator>();
@@ -26,6 +28,7 @@ namespace Simple2DRPG
         {
             Move();
             CheckInput();
+            CheckGround();
             CheckAnim();
         }
 
@@ -36,7 +39,7 @@ namespace Simple2DRPG
 
         public void Jump()
         {
-            _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpForce);
+            if (_isGrounded) _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpForce);
         }
 
         private void CheckInput()
@@ -49,7 +52,10 @@ namespace Simple2DRPG
         private void CheckAnim()
         {
             CheckFlip();
+            _animator.SetFloat("YVelocity",_rigid.velocity.y);
             _animator.SetBool("IsMoving", _horizontalInput != 0);
+
+            _animator.SetBool("IsGrounded", _isGrounded);
         }
 
         private void Flip()
@@ -63,6 +69,16 @@ namespace Simple2DRPG
         {
             if (_horizontalInput > 0 && FacingDirection != 1) Flip();
             else if (_horizontalInput < 0 && FacingDirection != -1) Flip();
+        }
+
+        private void CheckGround()
+        {
+            _isGrounded = Physics2D.Raycast(transform.position, Vector2.down, _groundCheckDistance, _groundLayer);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - _groundCheckDistance));
         }
     }
 }

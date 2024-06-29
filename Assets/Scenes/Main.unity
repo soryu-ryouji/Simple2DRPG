@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 282269279}
   - component: {fileID: 282269278}
   - component: {fileID: 282269281}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 1993257694}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2c9dc30f241ac8e42bef86ed93b52d6a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -559,6 +559,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6a0ffa8cb469343abb8aa33c284352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _groundCheckDistance: 1.4
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
