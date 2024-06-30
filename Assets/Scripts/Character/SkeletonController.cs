@@ -16,7 +16,7 @@ namespace Simple2DRPG.Character
         {
             base.Update();
 
-            if (!_isGrounded) Flip();
+            if (!_isGrounded || _isWallDetected) Flip();
 
             _rigid.velocity = new Vector2(_moveSpeed * FacingDirection, _rigid.velocity.y);
         }

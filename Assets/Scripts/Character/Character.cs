@@ -9,11 +9,16 @@ namespace Simple2DRPG.Character
 
         public int FacingDirection { get; private set; } = 1;
 
-        [Header("Ground Check info")]
+        [Header("Collision Check info")]
+        [SerializeField] private LayerMask _groundLayer;
+        [Space]
         [SerializeField] protected Transform _groundCheckPos;
         [SerializeField] protected float _groundCheckDistance = 0.3f;
-        [SerializeField] private LayerMask _groundLayer;
+        [Space]
+        [SerializeField] protected Transform _wallCheckPos;
+        [SerializeField] protected float _wallCheckDistance = 0.7f;
         protected bool _isGrounded;
+        protected bool _isWallDetected;
 
         protected virtual void Awake()
         {
@@ -23,7 +28,7 @@ namespace Simple2DRPG.Character
 
         protected virtual void Update()
         {
-            CheckGround();
+            CollisionCheck();
         }
 
         protected void Flip()
@@ -32,9 +37,19 @@ namespace Simple2DRPG.Character
             transform.Rotate(0, 180, 0);
         }
 
-        protected virtual void CheckGround()
+        protected virtual void CollisionCheck()
         {
-            _isGrounded = Physics2D.Raycast(_groundCheckPos.position, Vector2.down, _groundCheckDistance, _groundLayer);
+            if (_groundCheckPos != null)
+            {
+                _isGrounded = Physics2D.Raycast(
+                    _groundCheckPos.position, Vector2.down, _groundCheckDistance, _groundLayer);
+            }
+
+            if (_wallCheckPos != null)
+            {
+                _isWallDetected = Physics2D.Raycast(
+                    _wallCheckPos.position, Vector2.right, _wallCheckDistance * FacingDirection, _groundLayer);
+            }
         }
 
         protected virtual void OnDrawGizmos()
@@ -43,6 +58,11 @@ namespace Simple2DRPG.Character
             {
                 Gizmos.DrawLine(_groundCheckPos.position,
                     new Vector3(_groundCheckPos.position.x, _groundCheckPos.position.y - _groundCheckDistance));
+            }
+            if (_wallCheckPos != null)
+            {
+                Gizmos.DrawLine(_wallCheckPos.position,
+                    new(_wallCheckPos.position.x + _wallCheckDistance * FacingDirection, _wallCheckPos.position.y));
             }
         }
     }
