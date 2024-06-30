@@ -539,6 +539,10 @@ MonoBehaviour:
   _wallCheckPos: {fileID: 317428421}
   _wallCheckDistance: 0.7
   _moveSpeed: 3
+  _playerCheckDistance: 4
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,7 +828,7 @@ GameObject:
   - component: {fileID: 1993257696}
   - component: {fileID: 1993257697}
   - component: {fileID: 1993257698}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
