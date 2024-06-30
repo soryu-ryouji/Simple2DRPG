@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Simple2DRPG
+namespace Simple2DRPG.Character
 {
     public class PlayerAnimEvent : MonoBehaviour
     {

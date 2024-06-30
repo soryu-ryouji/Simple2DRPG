@@ -1,46 +1,38 @@
 using UnityEngine;
 
-namespace Simple2DRPG
+namespace Simple2DRPG.Character
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : Character
     {
-        private Animator _animator;
-        private Rigidbody2D _rigid;
+        [Header("Move info")]
+        [SerializeField] private float _jumpForce = 15;
+        [SerializeField] private float _moveSpeed = 6;
+        [SerializeField] private float _horizontalInput;
 
-        private float _jumpForce = 5;
-        private float _moveSpeed = 6;
-        private float _horizontalInput;
+        [SerializeField] private float _dashSpeed = 20;
+        [SerializeField] private float _dashDuration = 0.3f;
+        [SerializeField] private float _dashTime = 0;
 
-        public int FacingDirection { get; private set; } = 1;
+        [SerializeField] private float _dashCooldown = 1;
+        [SerializeField] private float _dashCooldownTimer;
 
-        [Header("Ground Check info")]
-        [SerializeField] private float _groundCheckDistance = 1.4f;
-        [SerializeField] private LayerMask _groundLayer;
-        private bool _isGrounded;
-
-        private float _dashSpeed = 20;
-        private float _dashDuration = 0.3f;
-        private float _dashTime = 0;
-
-        private float _dashCooldown = 1;
-        private float _dashCooldownTimer;
-
+        [Header("Attack info")]
+        [SerializeField] private int _comboCounter;
+        [SerializeField] private float _comboTime = 1;
         private bool _isAttacking;
-        private int _comboCounter;
-        private float _comboTime = 1;
         private float _comboTimeWindow;
 
-        private void Awake()
+        protected override void Awake()
         {
-            _animator = this.transform.GetComponentInChildren<Animator>();
-            _rigid = GetComponent<Rigidbody2D>();
+            base.Awake();
         }
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
+
             Move();
             CheckInput();
-            CheckGround();
 
             _dashTime -= Time.deltaTime;
             _dashCooldownTimer -= Time.deltaTime;
@@ -99,36 +91,19 @@ namespace Simple2DRPG
         private void CheckAnim()
         {
             CheckFlip();
-            _animator.SetFloat("YVelocity", _rigid.velocity.y);
-            _animator.SetBool("IsMoving", _horizontalInput != 0);
-            _animator.SetBool("IsDashing", _dashTime > 0);
-            _animator.SetBool("IsGrounded", _isGrounded);
+            _anim.SetFloat("YVelocity", _rigid.velocity.y);
+            _anim.SetBool("IsMoving", _horizontalInput != 0);
+            _anim.SetBool("IsDashing", _dashTime > 0);
+            _anim.SetBool("IsGrounded", _isGrounded);
 
-            _animator.SetBool("IsAttacking", _isAttacking);
-            _animator.SetInteger("ComboCounter", _comboCounter);
-        }
-
-        private void Flip()
-        {
-            FacingDirection *= -1;
-
-            transform.Rotate(0, 180, 0);
+            _anim.SetBool("IsAttacking", _isAttacking);
+            _anim.SetInteger("ComboCounter", _comboCounter);
         }
 
         private void CheckFlip()
         {
             if (_horizontalInput > 0 && FacingDirection != 1) Flip();
             else if (_horizontalInput < 0 && FacingDirection != -1) Flip();
-        }
-
-        private void CheckGround()
-        {
-            _isGrounded = Physics2D.Raycast(transform.position, Vector2.down, _groundCheckDistance, _groundLayer);
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - _groundCheckDistance));
         }
     }
 }
