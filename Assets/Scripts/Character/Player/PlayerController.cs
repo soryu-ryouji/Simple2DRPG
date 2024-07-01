@@ -16,8 +16,6 @@ namespace Simple2DRPG.Character
         public float DashSpeed = 20;
         public float DashDuration = 0.3f;
         public float DashDirection { get; private set; }
-        [SerializeField] private float _dashCooldown = 1;
-        [SerializeField] private float _dashUsageTimer;
 
         public bool IsBusy { get; private set; } = false;
 
@@ -83,10 +81,8 @@ namespace Simple2DRPG.Character
         {
             if (IsWallDetected) return;
 
-            _dashUsageTimer -= Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.LeftShift) && _dashUsageTimer < 0)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.Instance.Dash.CanUseSkill())
             {
-                _dashUsageTimer = _dashCooldown;
                 DashDirection = Input.GetAxis("Horizontal");
                 if (DashDirection == 0) DashDirection = FaceDirection;
 
