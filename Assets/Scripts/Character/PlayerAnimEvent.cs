@@ -11,9 +11,9 @@ namespace Simple2DRPG.Character
             _player = GetComponentInParent<PlayerController>();
         }
 
-        private void PlayerAttackOver()
+        private void TriggerAnim()
         {
-            _player.AttackOver();
+            _player.TriggerAnim();
         }
     }
 }

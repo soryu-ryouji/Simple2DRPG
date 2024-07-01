@@ -41,3 +41,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Sky
+    uniqueID: 1421720735
+    locked: 0
+  - name: DistantMountain
+    uniqueID: 545536123
+    locked: 0
+  - name: DistantCity
+    uniqueID: 1273753575
+    locked: 0
+  - name: City
+    uniqueID: 1761842959
+    locked: 0
+  - name: Background
+    uniqueID: 167207075
+    locked: 0
+  - name: Ground
+    uniqueID: 4096745325
+    locked: 0
+  - name: Player
+    uniqueID: 457678455
+    locked: 0

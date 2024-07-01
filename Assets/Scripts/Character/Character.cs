@@ -4,10 +4,10 @@ namespace Simple2DRPG.Character
 {
     public class Character : MonoBehaviour
     {
-        protected Animator _anim;
-        protected Rigidbody2D _rigid;
+        public Animator Anim;
+        public Rigidbody2D Rigitbody { get; protected set; }
 
-        public int FacingDirection { get; private set; } = 1;
+        public int FaceDirection { get; private set; } = 1;
 
         [Header("Collision Check info")]
         [SerializeField] private LayerMask _groundLayer;
@@ -17,13 +17,19 @@ namespace Simple2DRPG.Character
         [Space]
         [SerializeField] protected Transform _wallCheckPos;
         [SerializeField] protected float _wallCheckDistance = 0.7f;
-        protected bool _isGrounded;
-        protected bool _isWallDetected;
+        public bool IsGrounded =>
+            Physics2D.Raycast(_groundCheckPos.position, Vector2.down, _groundCheckDistance, _groundLayer);
+        public bool IsWallDetected =>
+            Physics2D.Raycast(_wallCheckPos.position, Vector2.right, _wallCheckDistance * FaceDirection, _groundLayer);
 
         protected virtual void Awake()
         {
-            _anim = GetComponentInChildren<Animator>();
-            _rigid = GetComponent<Rigidbody2D>();
+            Anim = GetComponentInChildren<Animator>();
+            Rigitbody = GetComponent<Rigidbody2D>();
+        }
+
+        protected virtual void Start()
+        {
         }
 
         protected virtual void Update()
@@ -33,23 +39,12 @@ namespace Simple2DRPG.Character
 
         protected void Flip()
         {
-            FacingDirection *= -1;
+            FaceDirection *= -1;
             transform.Rotate(0, 180, 0);
         }
 
         protected virtual void CollisionCheck()
         {
-            if (_groundCheckPos != null)
-            {
-                _isGrounded = Physics2D.Raycast(
-                    _groundCheckPos.position, Vector2.down, _groundCheckDistance, _groundLayer);
-            }
-
-            if (_wallCheckPos != null)
-            {
-                _isWallDetected = Physics2D.Raycast(
-                    _wallCheckPos.position, Vector2.right, _wallCheckDistance * FacingDirection, _groundLayer);
-            }
         }
 
         protected virtual void OnDrawGizmos()
@@ -62,7 +57,7 @@ namespace Simple2DRPG.Character
             if (_wallCheckPos != null)
             {
                 Gizmos.DrawLine(_wallCheckPos.position,
-                    new(_wallCheckPos.position.x + _wallCheckDistance * FacingDirection, _wallCheckPos.position.y));
+                    new(_wallCheckPos.position.x + _wallCheckDistance * FaceDirection, _wallCheckPos.position.y));
             }
         }
     }

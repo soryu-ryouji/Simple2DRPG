@@ -1,109 +1,121 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Simple2DRPG.Character
 {
     public class PlayerController : Character
     {
-        [Header("Move info")]
-        [SerializeField] private float _jumpForce = 15;
-        [SerializeField] private float _moveSpeed = 6;
-        [SerializeField] private float _horizontalInput;
-
-        [SerializeField] private float _dashSpeed = 20;
-        [SerializeField] private float _dashDuration = 0.3f;
-        [SerializeField] private float _dashTime = 0;
-
-        [SerializeField] private float _dashCooldown = 1;
-        [SerializeField] private float _dashCooldownTimer;
-
         [Header("Attack info")]
-        [SerializeField] private int _comboCounter;
-        [SerializeField] private float _comboTime = 1;
-        private bool _isAttacking;
-        private float _comboTimeWindow;
+        public Vector2[] PrimaryAttackMovement = { new(3, 1.5f), new(1, 2.5f), new(4, 1.5f) };
+
+        [Header("Move info")]
+        public float JumpForce = 25;
+        public float MoveSpeed = 10;
+
+        [Header("Dash info")]
+        public float DashSpeed = 20;
+        public float DashDuration = 0.3f;
+        public float DashDirection { get; private set; }
+        [SerializeField] private float _dashCooldown = 1;
+        [SerializeField] private float _dashUsageTimer;
+
+        public bool IsBusy { get; private set; } = false;
+
+        private PlayerStateMachine _stateMachine;
+        public PlayerIdleState IdleState { get; private set; }
+        public PlayerMoveState MoveState { get; private set; }
+        public PlayerJumpState JumpState { get; private set; }
+        public PlayerAirState AirState { get; private set; }
+        public PlayerDashState DashState { get; private set; }
+        public PlayerWallSlideState WallSlideState { get; private set; }
+        public PlayerWallJumpState WallJumpState { get; private set; }
+        public PlayerPrimaryAttackState PrimaryAttackState { get; private set; }
 
         protected override void Awake()
         {
             base.Awake();
+
+            _stateMachine = new PlayerStateMachine();
+            IdleState = new PlayerIdleState(this, _stateMachine, "Idle");
+            MoveState = new PlayerMoveState(this, _stateMachine, "Move");
+            JumpState = new PlayerJumpState(this, _stateMachine, "Jump");
+            AirState = new PlayerAirState(this, _stateMachine, "Jump");
+            DashState = new PlayerDashState(this, _stateMachine, "Dash");
+            WallSlideState = new PlayerWallSlideState(this, _stateMachine, "WallSlide");
+            WallJumpState = new PlayerWallJumpState(this, _stateMachine, "Jump");
+            PrimaryAttackState = new PlayerPrimaryAttackState(this, _stateMachine, "PrimaryAttack");
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+            _stateMachine.Initialize(IdleState);
         }
 
         protected override void Update()
         {
             base.Update();
 
-            Move();
-            CheckInput();
+            // _dashTime -= Time.deltaTime;
+            // _dashCooldownTimer -= Time.deltaTime;
+            // _comboTimeWindow -= Time.deltaTime;
 
-            _dashTime -= Time.deltaTime;
-            _dashCooldownTimer -= Time.deltaTime;
-            _comboTimeWindow -= Time.deltaTime;
-
-            CheckAnim();
+            _stateMachine.CurrentState.Update();
+            CheckDash();
         }
 
-        private void Dash()
+        public IEnumerator BusyFor(float busySeconds)
         {
-            if (_dashCooldownTimer < 0 && !_isAttacking)
+            IsBusy = true;
+            yield return new WaitForSecondsRealtime(busySeconds);
+            IsBusy = false;
+        }
+
+        public void SetVelocity(float xVelocity, float YVelocity)
+        {
+            Rigitbody.velocity = new Vector2(xVelocity, YVelocity);
+            SetFlip(xVelocity);
+
+        }
+
+        private void CheckDash()
+        {
+            if (IsWallDetected) return;
+
+            _dashUsageTimer -= Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.LeftShift) && _dashUsageTimer < 0)
             {
-                _dashCooldownTimer = _dashCooldown;
-                _dashTime = _dashDuration;
+                _dashUsageTimer = _dashCooldown;
+                DashDirection = Input.GetAxis("Horizontal");
+                if (DashDirection == 0) DashDirection = FaceDirection;
+
+                _stateMachine.ChangeState(DashState);
             }
         }
 
-        public void Move()
+        public void TriggerAnim() => _stateMachine.CurrentState.TriggerFinishAnim();
+
+        // private void Attack()
+        // {
+        //     if (!_isGrounded) return;
+
+        //     if (_comboTimeWindow < 0) _comboCounter = 0;
+        //     _isAttacking = true;
+        //     _comboTimeWindow = _comboTime;
+        // }
+
+        // public void AttackOver()
+        // {
+        //     _isAttacking = false;
+        //     _comboCounter++;
+        //     if (_comboCounter > 2) _comboCounter = 0;
+        // }
+
+        private void SetFlip(float horizontal)
         {
-            if (_isAttacking) _rigid.velocity = new Vector2(0, 0);
-            else if (_dashTime > 0) _rigid.velocity = new Vector2(FacingDirection * _dashSpeed, 0);
-            else _rigid.velocity = new Vector2(_horizontalInput * _moveSpeed, _rigid.velocity.y);
-        }
-
-        public void Jump()
-        {
-            if (_isGrounded) _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpForce);
-        }
-
-        private void CheckInput()
-        {
-            _horizontalInput = Input.GetAxis("Horizontal");
-
-            if (Input.GetKeyDown(KeyCode.Space)) Jump();
-            if (Input.GetKeyDown(KeyCode.LeftShift)) Dash();
-
-            if (Input.GetKeyDown(KeyCode.J)) Attack();
-        }
-
-        private void Attack()
-        {
-            if (!_isGrounded) return;
-
-            if (_comboTimeWindow < 0) _comboCounter = 0;
-            _isAttacking = true;
-            _comboTimeWindow = _comboTime;
-        }
-
-        public void AttackOver()
-        {
-            _isAttacking = false;
-            _comboCounter++;
-            if (_comboCounter > 2) _comboCounter = 0;
-        }
-
-        private void CheckAnim()
-        {
-            CheckFlip();
-            _anim.SetFloat("YVelocity", _rigid.velocity.y);
-            _anim.SetBool("IsMoving", _horizontalInput != 0);
-            _anim.SetBool("IsDashing", _dashTime > 0);
-            _anim.SetBool("IsGrounded", _isGrounded);
-
-            _anim.SetBool("IsAttacking", _isAttacking);
-            _anim.SetInteger("ComboCounter", _comboCounter);
-        }
-
-        private void CheckFlip()
-        {
-            if (_horizontalInput > 0 && FacingDirection != 1) Flip();
-            else if (_horizontalInput < 0 && FacingDirection != -1) Flip();
+            if (Rigitbody.velocity.x > 0 && FaceDirection != 1) Flip();
+            else if (Rigitbody.velocity.x < 0 && FaceDirection != -1) Flip();
         }
     }
 }
