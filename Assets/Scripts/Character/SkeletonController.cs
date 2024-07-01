@@ -25,7 +25,6 @@ namespace Simple2DRPG.Character
 
             if (_isPlayerDetected)
             {
-                Debug.Log("111111");
                 if (_isPlayerDetected.distance > 1)
                 {
                     Debug.Log("I see player");
@@ -39,7 +38,7 @@ namespace Simple2DRPG.Character
                 }
             }
 
-            if (!_isGrounded || _isWallDetected) Flip();
+            if (!IsGrounded || IsWallDetected) Flip();
 
             Move();
         }
@@ -48,11 +47,11 @@ namespace Simple2DRPG.Character
         {
             if (_isPlayerDetected.distance > 1)
             {
-                _rigid.velocity = new Vector2(_moveSpeed * 1.5f * FacingDirection, _rigid.velocity.y);
+                Rigitbody.velocity = new Vector2(_moveSpeed * 1.5f * FaceDirection, Rigitbody.velocity.y);
             }
             else if (!_isAttacking)
             {
-                _rigid.velocity = new Vector2(_moveSpeed * FacingDirection, _rigid.velocity.y);
+                Rigitbody.velocity = new Vector2(_moveSpeed * FaceDirection, Rigitbody.velocity.y);
             }
         }
 
@@ -60,7 +59,7 @@ namespace Simple2DRPG.Character
         {
             base.CollisionCheck();
 
-            _isPlayerDetected = Physics2D.Raycast(transform.position, Vector2.right, _playerCheckDistance * FacingDirection, _playerLayer);
+            _isPlayerDetected = Physics2D.Raycast(transform.position, Vector2.right, _playerCheckDistance * FaceDirection, _playerLayer);
         }
 
         protected override void OnDrawGizmos()
@@ -68,7 +67,7 @@ namespace Simple2DRPG.Character
             base.OnDrawGizmos();
 
             Gizmos.DrawLine(transform.position,
-                new Vector3(transform.position.x + _playerCheckDistance * FacingDirection, transform.position.y));
+                new Vector3(transform.position.x + _playerCheckDistance * FaceDirection, transform.position.y));
         }
     }
 }
