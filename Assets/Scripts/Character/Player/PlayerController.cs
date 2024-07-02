@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Simple2DRPG.Character.Skill;
 
 namespace Simple2DRPG.Character
 {
@@ -81,7 +82,7 @@ namespace Simple2DRPG.Character
         {
             if (IsWallDetected) return;
 
-            if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.Instance.Dash.CanUseSkill())
+            if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.Instance.DashSkill.CanUseSkill())
             {
                 DashDirection = Input.GetAxis("Horizontal");
                 if (DashDirection == 0) DashDirection = FaceDirection;

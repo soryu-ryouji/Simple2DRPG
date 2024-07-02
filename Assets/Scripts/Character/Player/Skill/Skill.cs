@@ -1,29 +1,32 @@
 using UnityEngine;
 
-public class Skill : MonoBehaviour
+namespace Simple2DRPG.Character.Skill
 {
-    [SerializeField] protected float _cooldown;
-    protected float _cooldownTimer;
-
-    protected virtual void Update()
+    public class Skill : MonoBehaviour
     {
-        _cooldownTimer -= Time.deltaTime;
-    }
+        [SerializeField] protected float _cooldown;
+        protected float _cooldownTimer;
 
-    public virtual bool CanUseSkill()
-    {
-        if (_cooldownTimer < 0)
+        protected virtual void Update()
         {
-            UseSkill();
-            _cooldownTimer = _cooldown;
-            return true;
+            _cooldownTimer -= Time.deltaTime;
         }
 
-        Debug.Log($"<color=yellow>{nameof(DashSkill)} is on cooldown</color>");
-        return false;
-    }
+        public virtual bool CanUseSkill()
+        {
+            if (_cooldownTimer < 0)
+            {
+                UseSkill();
+                _cooldownTimer = _cooldown;
+                return true;
+            }
 
-    public virtual void UseSkill()
-    {
+            Debug.Log($"<color=yellow>{nameof(DashSkill)} is on cooldown</color>");
+            return false;
+        }
+
+        public virtual void UseSkill()
+        {
+        }
     }
 }

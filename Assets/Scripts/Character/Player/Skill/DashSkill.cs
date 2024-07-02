@@ -1,7 +1,10 @@
-public class DashSkill : Skill
+namespace Simple2DRPG.Character.Skill
 {
-    public override void UseSkill()
+    public class DashSkill : Skill
     {
-        base.UseSkill();
+        public override void UseSkill()
+        {
+            base.UseSkill();
+        }
     }
 }

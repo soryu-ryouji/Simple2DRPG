@@ -1,3 +1,5 @@
+using Simple2DRPG.Character.Skill;
+
 namespace Simple2DRPG.Character
 {
     public class PlayerDashState : PlayerState
@@ -11,6 +13,7 @@ namespace Simple2DRPG.Character
         {
             _stateTimer = _player.DashDuration;
             base.Enter();
+            SkillManager.Instance.CloneSkill.CanUseSkill();
         }
 
         public override void Update()
