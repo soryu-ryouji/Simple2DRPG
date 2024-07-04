@@ -9,16 +9,17 @@ namespace Simple2DRPG.Character
 
         public int FaceDirection { get; private set; } = 1;
 
-        [Header("Collision Check info")]
-        [SerializeField] private LayerMask _groundLayer;
-        [Space]
-        [SerializeField] protected Transform _groundCheckPos;
+        [Header("Collision Check info")] [SerializeField]
+        private LayerMask _groundLayer;
+
+        [Space] [SerializeField] protected Transform _groundCheckPos;
         [SerializeField] protected float _groundCheckDistance = 0.3f;
-        [Space]
-        [SerializeField] protected Transform _wallCheckPos;
+        [Space] [SerializeField] protected Transform _wallCheckPos;
         [SerializeField] protected float _wallCheckDistance = 0.7f;
+
         public bool IsGrounded =>
             Physics2D.Raycast(_groundCheckPos.position, Vector2.down, _groundCheckDistance, _groundLayer);
+
         public bool IsWallDetected =>
             Physics2D.Raycast(_wallCheckPos.position, Vector2.right, _wallCheckDistance * FaceDirection, _groundLayer);
 
@@ -37,7 +38,20 @@ namespace Simple2DRPG.Character
             CollisionCheck();
         }
 
-        protected void Flip()
+        public void SetVelocity(float xVelocity, float YVelocity)
+        {
+            Rigitbody.velocity = new Vector2(xVelocity, YVelocity);
+            SetFlip(xVelocity);
+        }
+
+
+        private void SetFlip(float horizontal)
+        {
+            if (Rigitbody.velocity.x > 0 && FaceDirection != 1) Flip();
+            else if (Rigitbody.velocity.x < 0 && FaceDirection != -1) Flip();
+        }
+
+        public void Flip()
         {
             FaceDirection *= -1;
             transform.Rotate(0, 180, 0);
@@ -54,6 +68,7 @@ namespace Simple2DRPG.Character
                 Gizmos.DrawLine(_groundCheckPos.position,
                     new Vector3(_groundCheckPos.position.x, _groundCheckPos.position.y - _groundCheckDistance));
             }
+
             if (_wallCheckPos != null)
             {
                 Gizmos.DrawLine(_wallCheckPos.position,

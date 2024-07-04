@@ -6,15 +6,12 @@ namespace Simple2DRPG.Character
 {
     public class PlayerController : Character
     {
-        [Header("Attack info")]
-        public Vector2[] PrimaryAttackMovement = { new(3, 1.5f), new(1, 2.5f), new(4, 1.5f) };
+        [Header("Attack info")] public Vector2[] PrimaryAttackMovement = { new(3, 1.5f), new(1, 2.5f), new(4, 1.5f) };
 
-        [Header("Move info")]
-        public float JumpForce = 25;
+        [Header("Move info")] public float JumpForce = 25;
         public float MoveSpeed = 10;
 
-        [Header("Dash info")]
-        public float DashSpeed = 20;
+        [Header("Dash info")] public float DashSpeed = 20;
         public float DashDuration = 0.3f;
         public float DashDirection { get; private set; }
 
@@ -71,12 +68,7 @@ namespace Simple2DRPG.Character
             IsBusy = false;
         }
 
-        public void SetVelocity(float xVelocity, float YVelocity)
-        {
-            Rigitbody.velocity = new Vector2(xVelocity, YVelocity);
-            SetFlip(xVelocity);
 
-        }
 
         private void CheckDash()
         {
@@ -108,11 +100,5 @@ namespace Simple2DRPG.Character
         //     _comboCounter++;
         //     if (_comboCounter > 2) _comboCounter = 0;
         // }
-
-        private void SetFlip(float horizontal)
-        {
-            if (Rigitbody.velocity.x > 0 && FaceDirection != 1) Flip();
-            else if (Rigitbody.velocity.x < 0 && FaceDirection != -1) Flip();
-        }
     }
 }
