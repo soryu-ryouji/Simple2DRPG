@@ -21,7 +21,7 @@ namespace Simple2DRPG.Character
         public virtual void Enter()
         {
             _triggerCalled = false;
-            _rb = _enemyBase.Rigitbody;
+            _rb = _enemyBase.Rb;
             _enemyBase.Anim.SetBool(_animBoolName, true);
         }
 

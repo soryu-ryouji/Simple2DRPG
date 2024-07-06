@@ -1,3 +1,4 @@
+using Simple2DRPG.FX;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -5,21 +6,20 @@ namespace Simple2DRPG.Character
 {
     public class Character : MonoBehaviour
     {
-        public Animator Anim;
-        public Rigidbody2D Rigitbody { get; protected set; }
+        public Animator Anim { get; private set; }
+        public Rigidbody2D Rb { get; private set; }
+        public CharacterFX Fx { get; private set; }
 
         public int FaceDirection { get; private set; } = 1;
 
         [Header("Collision Check info")] [SerializeField]
         private LayerMask _groundLayer;
 
-        [FormerlySerializedAs("_groundCheckPos")] [Space] [SerializeField]
-        protected Transform _groundCheck;
+        [Space] [SerializeField] protected Transform _groundCheck;
 
         [SerializeField] protected float _groundCheckDistance = 0.3f;
 
-        [FormerlySerializedAs("_wallCheckPos")] [Space] [SerializeField]
-        protected Transform _wallCheck;
+        [Space] [SerializeField] protected Transform _wallCheck;
 
         [SerializeField] protected float _wallCheckDistance = 0.7f;
 
@@ -32,7 +32,8 @@ namespace Simple2DRPG.Character
         protected virtual void Awake()
         {
             Anim = GetComponentInChildren<Animator>();
-            Rigitbody = GetComponent<Rigidbody2D>();
+            Fx = GetComponent<CharacterFX>();
+            Rb = GetComponent<Rigidbody2D>();
         }
 
         protected virtual void Start()
@@ -46,20 +47,21 @@ namespace Simple2DRPG.Character
 
         public void Damage(int damage)
         {
+            Fx.StartCoroutine("FlashFX");
             Debug.Log($"<color=yellow>{gameObject.name} was damaged: {damage}</color>");
         }
 
         public void SetVelocity(float xVelocity, float YVelocity)
         {
-            Rigitbody.velocity = new Vector2(xVelocity, YVelocity);
+            Rb.velocity = new Vector2(xVelocity, YVelocity);
             SetFlip(xVelocity);
         }
 
 
         private void SetFlip(float horizontal)
         {
-            if (Rigitbody.velocity.x > 0 && FaceDirection != 1) Flip();
-            else if (Rigitbody.velocity.x < 0 && FaceDirection != -1) Flip();
+            if (Rb.velocity.x > 0 && FaceDirection != 1) Flip();
+            else if (Rb.velocity.x < 0 && FaceDirection != -1) Flip();
         }
 
         public void Flip()

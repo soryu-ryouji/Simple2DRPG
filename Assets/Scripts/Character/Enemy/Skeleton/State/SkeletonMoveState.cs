@@ -16,7 +16,7 @@ namespace Simple2DRPG.Character
         {
             base.Update();
 
-            _enemyBase.SetVelocity(_enemyBase.FaceDirection * _enemy.moveSpeed, _enemyBase.Rigitbody.velocity.y);
+            _enemyBase.SetVelocity(_enemyBase.FaceDirection * _enemy.moveSpeed, _enemyBase.Rb.velocity.y);
 
             if (_enemyBase.IsWallDetected || !_enemyBase.IsGrounded)
             {

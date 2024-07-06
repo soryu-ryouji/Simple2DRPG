@@ -21,7 +21,7 @@ namespace Simple2DRPG.Character
             _stateMachine = stateMachine;
             _animBoolName = animBoolName;
 
-            _rb = player.Rigitbody;
+            _rb = player.Rb;
         }
 
         public virtual void Enter()
