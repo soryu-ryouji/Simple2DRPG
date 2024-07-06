@@ -1,3 +1,5 @@
+using Simple2DRPG.Character.Skill;
+
 namespace Simple2DRPG.Character
 {
     public class PlayerDashState : PlayerState
@@ -9,15 +11,16 @@ namespace Simple2DRPG.Character
 
         public override void Enter()
         {
-            _stateTimer = _player.DashDuration;
+            _stateTimer = _player.dashDuration;
             base.Enter();
+            SkillManager.Instance.CloneSkill.CanUseSkill();
         }
 
         public override void Update()
         {
             base.Update();
 
-            _player.SetVelocity(_player.DashSpeed * _player.FaceDirection, 0);
+            _player.SetVelocity(_player.dashSpeed * _player.FaceDirection, 0);
 
             if (!_player.IsGrounded && _player.IsWallDetected) _stateMachine.ChangeState(_player.WallSlideState);
             if (_stateTimer < 0) _stateMachine.ChangeState(_player.IdleState);

@@ -25,7 +25,7 @@ namespace Simple2DRPG.Character
             if (_horizontalInput != 0) attackDirection = _horizontalInput;
 
             _player.Anim.SetInteger("ComboCounter", _comboCounter);
-            var attackMovement = _player.PrimaryAttackMovement[_comboCounter];
+            var attackMovement = _player.primaryAttackMovement[_comboCounter];
             _player.SetVelocity(attackMovement.x * attackDirection, attackMovement.y);
             _stateTimer = 0.1f;
         }

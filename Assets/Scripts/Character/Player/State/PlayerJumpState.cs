@@ -13,7 +13,7 @@ namespace Simple2DRPG.Character
         {
             base.Enter();
 
-            _rb.velocity = new Vector2(_rb.velocity.x, _player.JumpForce);
+            _rb.velocity = new Vector2(_rb.velocity.x, _player.jumpForce);
         }
 
         public override void Update()
