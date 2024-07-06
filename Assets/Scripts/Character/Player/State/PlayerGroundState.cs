@@ -4,7 +4,7 @@ namespace Simple2DRPG.Character
 {
     public class PlayerGroundState : PlayerState
     {
-        public PlayerGroundState(PlayerController player, PlayerStateMachine stateMachine, string animBoolName)
+        public PlayerGroundState(Player player, PlayerStateMachine stateMachine, string animBoolName)
             : base(player, stateMachine, animBoolName)
         {
         }

@@ -4,7 +4,7 @@ namespace Simple2DRPG.Character
 {
     public class PlayerState
     {
-        protected PlayerController _player;
+        protected Player _player;
         protected PlayerStateMachine _stateMachine;
         protected Rigidbody2D _rb;
 
@@ -15,7 +15,7 @@ namespace Simple2DRPG.Character
         protected float _verticalInput;
         private string _animBoolName;
 
-        public PlayerState(PlayerController player, PlayerStateMachine stateMachine, string animBoolName)
+        public PlayerState(Player player, PlayerStateMachine stateMachine, string animBoolName)
         {
             _player = player;
             _stateMachine = stateMachine;

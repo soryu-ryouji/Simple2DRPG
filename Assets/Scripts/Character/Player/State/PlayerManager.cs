@@ -5,7 +5,7 @@ namespace Simple2DRPG.Character
     public class PlayerManager : MonoBehaviour
     {
         public static PlayerManager Instance;
-        public PlayerController Player;
+        public Player Player;
 
         private void Awake()
         {

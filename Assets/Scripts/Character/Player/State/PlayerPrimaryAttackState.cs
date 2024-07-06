@@ -7,7 +7,7 @@ namespace Simple2DRPG.Character
         private int _comboCounter;
         private float _lastAttackTime;
         private float _comboWindow = 2;
-        public PlayerPrimaryAttackState(PlayerController player, PlayerStateMachine stateMachine, string animBoolName)
+        public PlayerPrimaryAttackState(Player player, PlayerStateMachine stateMachine, string animBoolName)
             : base(player, stateMachine, animBoolName)
         {
         }

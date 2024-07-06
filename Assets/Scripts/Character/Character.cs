@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Simple2DRPG.Character
 {
@@ -12,16 +13,21 @@ namespace Simple2DRPG.Character
         [Header("Collision Check info")] [SerializeField]
         private LayerMask _groundLayer;
 
-        [Space] [SerializeField] protected Transform _groundCheckPos;
+        [FormerlySerializedAs("_groundCheckPos")] [Space] [SerializeField]
+        protected Transform _groundCheck;
+
         [SerializeField] protected float _groundCheckDistance = 0.3f;
-        [Space] [SerializeField] protected Transform _wallCheckPos;
+
+        [FormerlySerializedAs("_wallCheckPos")] [Space] [SerializeField]
+        protected Transform _wallCheck;
+
         [SerializeField] protected float _wallCheckDistance = 0.7f;
 
         public bool IsGrounded =>
-            Physics2D.Raycast(_groundCheckPos.position, Vector2.down, _groundCheckDistance, _groundLayer);
+            Physics2D.Raycast(_groundCheck.position, Vector2.down, _groundCheckDistance, _groundLayer);
 
         public bool IsWallDetected =>
-            Physics2D.Raycast(_wallCheckPos.position, Vector2.right, _wallCheckDistance * FaceDirection, _groundLayer);
+            Physics2D.Raycast(_wallCheck.position, Vector2.right, _wallCheckDistance * FaceDirection, _groundLayer);
 
         protected virtual void Awake()
         {
@@ -36,6 +42,11 @@ namespace Simple2DRPG.Character
         protected virtual void Update()
         {
             CollisionCheck();
+        }
+
+        public void Damage(int damage)
+        {
+            Debug.Log($"<color=yellow>{gameObject.name} was damaged: {damage}</color>");
         }
 
         public void SetVelocity(float xVelocity, float YVelocity)
@@ -63,16 +74,18 @@ namespace Simple2DRPG.Character
 
         protected virtual void OnDrawGizmos()
         {
-            if (_groundCheckPos != null)
+            if (_groundCheck != null)
             {
-                Gizmos.DrawLine(_groundCheckPos.position,
-                    new Vector3(_groundCheckPos.position.x, _groundCheckPos.position.y - _groundCheckDistance));
+                Gizmos.DrawLine(_groundCheck.position,
+                    new Vector3(_groundCheck.position.x, _groundCheck.position.y - _groundCheckDistance));
             }
 
-            if (_wallCheckPos != null)
+            if (_wallCheck != null)
             {
-                Gizmos.DrawLine(_wallCheckPos.position,
-                    new(_wallCheckPos.position.x + _wallCheckDistance * FaceDirection, _wallCheckPos.position.y));
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(_wallCheck.position,
+                    new Vector3(_wallCheck.position.x + _wallCheckDistance * FaceDirection, _wallCheck.position.y));
+                Gizmos.color = Color.white;
             }
         }
     }

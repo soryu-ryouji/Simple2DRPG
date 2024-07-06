@@ -37,7 +37,7 @@ namespace Simple2DRPG.Character
         }
 
         public virtual RaycastHit2D IsPlayerDetected =>
-            Physics2D.Raycast(_wallCheckPos.position, Vector2.right * FaceDirection, 50, playerLayer);
+            Physics2D.Raycast(_wallCheck.position, Vector2.right * FaceDirection, 50, playerLayer);
 
         protected override void OnDrawGizmos()
         {
@@ -45,6 +45,7 @@ namespace Simple2DRPG.Character
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position,
                 new Vector3(transform.position.x + attackDistance * FaceDirection, transform.position.y));
+            Gizmos.color = Color.white;
         }
         
         public void TriggerFinishAnim() => stateMachine.CurrentState.TriggerFinishAnim();
