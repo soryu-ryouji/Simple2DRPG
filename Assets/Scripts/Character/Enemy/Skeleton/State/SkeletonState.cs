@@ -2,9 +2,9 @@
 {
     public class SkeletonState : EnemyState
     {
-        protected EnemySkeletonController _enemy;
-        public SkeletonState(EnemyController enemyBase, EnemyStateMachine stateMachine, string animBoolName,
-            EnemySkeletonController enemy)
+        protected EnemySkeleton _enemy;
+        public SkeletonState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName,
+            EnemySkeleton enemy)
             : base(enemyBase, stateMachine, animBoolName)
         {
             _enemy = enemy;

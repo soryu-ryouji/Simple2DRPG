@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 120010222}
   - component: {fileID: 120010224}
   - component: {fileID: 120010223}
+  - component: {fileID: 120010225}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -259,6 +260,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &120010225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120010221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9506e221a9fe9e84fa1d890a324cd327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &317428420
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,9 +345,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 380326143}
+  - component: {fileID: 380326147}
   - component: {fileID: 380326145}
   - component: {fileID: 380326144}
-  - component: {fileID: 380326147}
   m_Layer: 8
   m_Name: Enemy_Skeleton
   m_TagString: Untagged
@@ -442,8 +455,15 @@ MonoBehaviour:
   _groundCheckDistance: 0.3
   _wallCheckPos: {fileID: 317428421}
   _wallCheckDistance: 0.7
-  MoveSpeed: 4
-  IdleTime: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  moveSpeed: 4
+  idleTime: 2
+  attackDistance: 1.5
+  attackCooldown: 3
+  lastAttackTime: 0
+  battleTime: 0
 --- !u!1 &382622284
 GameObject:
   m_ObjectHideFlags: 0
@@ -3429,14 +3449,14 @@ MonoBehaviour:
   _groundCheckDistance: 0.5
   _wallCheckPos: {fileID: 100530357}
   _wallCheckDistance: 0.61
-  PrimaryAttackMovement:
+  primaryAttackMovement:
   - {x: 3, y: 1.5}
   - {x: 1, y: 2.5}
   - {x: 4, y: 1.5}
-  JumpForce: 15
-  MoveSpeed: 10
-  DashSpeed: 20
-  DashDuration: 0.3
+  jumpForce: 25
+  moveSpeed: 10
+  dashSpeed: 20
+  dashDuration: 0.3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

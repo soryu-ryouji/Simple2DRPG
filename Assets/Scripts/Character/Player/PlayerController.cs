@@ -1,18 +1,22 @@
 using System.Collections;
 using UnityEngine;
 using Simple2DRPG.Character.Skill;
+using UnityEngine.Serialization;
 
 namespace Simple2DRPG.Character
 {
     public class PlayerController : Character
     {
-        [Header("Attack info")] public Vector2[] PrimaryAttackMovement = { new(3, 1.5f), new(1, 2.5f), new(4, 1.5f) };
+        [Header("Attack info")]
+        public Vector2[] primaryAttackMovement = { new(3, 1.5f), new(1, 2.5f), new(4, 1.5f) };
 
-        [Header("Move info")] public float JumpForce = 25;
-        public float MoveSpeed = 10;
+        [Header("Move info")]
+        public float jumpForce = 25;
+        public float moveSpeed = 10;
 
-        [Header("Dash info")] public float DashSpeed = 20;
-        public float DashDuration = 0.3f;
+        [Header("Dash info")]
+        public float dashSpeed = 20;
+        public float dashDuration = 0.3f;
         public float DashDirection { get; private set; }
 
         public bool IsBusy { get; private set; } = false;

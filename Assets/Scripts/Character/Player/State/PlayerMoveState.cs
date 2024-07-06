@@ -17,7 +17,7 @@ namespace Simple2DRPG.Character
         {
             base.Update();
 
-            _player.SetVelocity(_horizontalInput * _player.MoveSpeed, _rb.velocity.y);
+            _player.SetVelocity(_horizontalInput * _player.moveSpeed, _rb.velocity.y);
 
             if (_horizontalInput == 0 || _player.IsWallDetected) _stateMachine.ChangeState(_player.IdleState);
         }

@@ -14,7 +14,7 @@ namespace Simple2DRPG.Character
             base.Enter();
 
             _stateTimer = .4f;
-            _player.SetVelocity(5 * -_player.FaceDirection, _player.JumpForce);
+            _player.SetVelocity(5 * -_player.FaceDirection, _player.jumpForce);
         }
 
         public override void Update()
