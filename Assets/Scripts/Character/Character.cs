@@ -1,3 +1,4 @@
+using System.Collections;
 using Simple2DRPG.FX;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,15 +13,18 @@ namespace Simple2DRPG.Character
 
         public int FaceDirection { get; private set; } = 1;
 
+        [Header("KnockBack info")] [SerializeField]
+        protected Vector2 knockBackDirection;
+
+        [SerializeField] protected float konckBackDuration;
+        protected bool IsKnocked;
+
         [Header("Collision Check info")] [SerializeField]
         private LayerMask _groundLayer;
 
-        [Space] [SerializeField] protected Transform _groundCheck;
-
+        [SerializeField] protected Transform _groundCheck;
         [SerializeField] protected float _groundCheckDistance = 0.3f;
-
-        [Space] [SerializeField] protected Transform _wallCheck;
-
+        [SerializeField] protected Transform _wallCheck;
         [SerializeField] protected float _wallCheckDistance = 0.7f;
 
         public bool IsGrounded =>
@@ -48,12 +52,24 @@ namespace Simple2DRPG.Character
         public void Damage(int damage)
         {
             Fx.StartCoroutine("FlashFX");
+            StartCoroutine(HitKnockBack());
             Debug.Log($"<color=yellow>{gameObject.name} was damaged: {damage}</color>");
         }
 
-        public void SetVelocity(float xVelocity, float YVelocity)
+        protected virtual IEnumerator HitKnockBack()
         {
-            Rb.velocity = new Vector2(xVelocity, YVelocity);
+            IsKnocked = true;
+            Rb.velocity = new Vector2(0, 0);
+            Rb.velocity = new Vector2(knockBackDirection.x * -FaceDirection, knockBackDirection.y);
+            yield return new WaitForSeconds(konckBackDuration);
+            IsKnocked = false;
+        }
+
+        public void SetVelocity(float xVelocity, float yVelocity)
+        {
+            if (IsKnocked) return;
+
+            Rb.velocity = new Vector2(xVelocity, yVelocity);
             SetFlip(xVelocity);
         }
 

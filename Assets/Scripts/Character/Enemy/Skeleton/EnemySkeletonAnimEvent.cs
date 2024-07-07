@@ -24,5 +24,8 @@ namespace Simple2DRPG.Character
                 if (item.GetComponent<Character>() != null) item.GetComponent<Character>().Damage(10);
             }
         }
+
+        private void OpenCounterAttackWindow() => _skeleton.OpenCounterAttackWindow();
+        private void CloseCounterAttackWindow() => _skeleton.CloseCounterAttackWindow();
     }
 }

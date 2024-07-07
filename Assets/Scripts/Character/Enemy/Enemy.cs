@@ -7,6 +7,12 @@ namespace Simple2DRPG.Character
     {
         [SerializeField] protected LayerMask playerLayer;
 
+        [Header("Stunned info")]
+        public float stunnedDuration;
+        public Vector2 stunnedDirection;
+
+        protected bool canBeStunned;
+        
         [Header("Move info")]
         public float moveSpeed = 4;
         public float idleTime = 2;
@@ -34,6 +40,27 @@ namespace Simple2DRPG.Character
         {
             base.Update();
             stateMachine.CurrentState.Update();
+        }
+
+        public virtual void OpenCounterAttackWindow()
+        {
+            canBeStunned = true;
+        }
+
+        public virtual void CloseCounterAttackWindow()
+        {
+            canBeStunned = false;
+        }
+
+        public virtual bool CanBeStunned()
+        {
+            if (canBeStunned)
+            {
+                CloseCounterAttackWindow();
+                return true;
+            }
+
+            return false;
         }
 
         public virtual RaycastHit2D IsPlayerDetected =>

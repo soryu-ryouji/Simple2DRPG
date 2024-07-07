@@ -449,6 +449,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be1c2363c69f4e74a9e9a6321f4636f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knockBackDirection: {x: 0, y: 0}
+  konckBackDuration: 0.1
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -459,6 +461,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  stunnedDuration: 0
+  stunnedDirection: {x: 0, y: 0}
   moveSpeed: 4
   idleTime: 2
   attackDistance: 1.5
@@ -3521,6 +3525,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6a0ffa8cb469343abb8aa33c284352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knockBackDirection: {x: 0, y: 0}
+  konckBackDuration: 0
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -3534,6 +3540,7 @@ MonoBehaviour:
   - {x: 4, y: 1.5}
   attackCheck: {fileID: 1066289185}
   attackCheckRadius: 0.7
+  counterAttackDuration: 0.5
   jumpForce: 25
   moveSpeed: 10
   dashSpeed: 20

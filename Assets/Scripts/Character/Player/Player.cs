@@ -11,7 +11,8 @@ namespace Simple2DRPG.Character
         public Vector2[] primaryAttackMovement = { new(3, 1.5f), new(1, 2.5f), new(4, 1.5f) };
         public Transform attackCheck;
         public float attackCheckRadius;
-
+        public float counterAttackDuration;
+        
         [Header("Move info")]
         public float jumpForce = 25;
         public float moveSpeed = 10;
@@ -32,6 +33,7 @@ namespace Simple2DRPG.Character
         public PlayerWallSlideState WallSlideState { get; private set; }
         public PlayerWallJumpState WallJumpState { get; private set; }
         public PlayerPrimaryAttackState PrimaryAttackState { get; private set; }
+        public PlayerCounterAttackState CounterAttackState { get; private set; }
 
         protected override void Awake()
         {
@@ -46,6 +48,7 @@ namespace Simple2DRPG.Character
             WallSlideState = new PlayerWallSlideState(this, _stateMachine, "WallSlide");
             WallJumpState = new PlayerWallJumpState(this, _stateMachine, "Jump");
             PrimaryAttackState = new PlayerPrimaryAttackState(this, _stateMachine, "PrimaryAttack");
+            CounterAttackState = new PlayerCounterAttackState(this, _stateMachine, "CounterAttack");
         }
 
         protected override void Start()
