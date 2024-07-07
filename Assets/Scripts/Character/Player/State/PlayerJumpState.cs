@@ -4,7 +4,7 @@ namespace Simple2DRPG.Character
 {
     public class PlayerJumpState : PlayerState
     {
-        public PlayerJumpState(PlayerController player, PlayerStateMachine stateMachine, string animBoolName)
+        public PlayerJumpState(Player player, PlayerStateMachine stateMachine, string animBoolName)
             : base(player, stateMachine, animBoolName)
         {
         }

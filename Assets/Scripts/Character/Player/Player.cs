@@ -5,11 +5,14 @@ using UnityEngine.Serialization;
 
 namespace Simple2DRPG.Character
 {
-    public class PlayerController : Character
+    public class Player : Character
     {
         [Header("Attack info")]
         public Vector2[] primaryAttackMovement = { new(3, 1.5f), new(1, 2.5f), new(4, 1.5f) };
-
+        public Transform attackCheck;
+        public float attackCheckRadius;
+        public float counterAttackDuration;
+        
         [Header("Move info")]
         public float jumpForce = 25;
         public float moveSpeed = 10;
@@ -30,6 +33,7 @@ namespace Simple2DRPG.Character
         public PlayerWallSlideState WallSlideState { get; private set; }
         public PlayerWallJumpState WallJumpState { get; private set; }
         public PlayerPrimaryAttackState PrimaryAttackState { get; private set; }
+        public PlayerCounterAttackState CounterAttackState { get; private set; }
 
         protected override void Awake()
         {
@@ -44,6 +48,7 @@ namespace Simple2DRPG.Character
             WallSlideState = new PlayerWallSlideState(this, _stateMachine, "WallSlide");
             WallJumpState = new PlayerWallJumpState(this, _stateMachine, "Jump");
             PrimaryAttackState = new PlayerPrimaryAttackState(this, _stateMachine, "PrimaryAttack");
+            CounterAttackState = new PlayerCounterAttackState(this, _stateMachine, "CounterAttack");
         }
 
         protected override void Start()
@@ -57,10 +62,6 @@ namespace Simple2DRPG.Character
         {
             base.Update();
 
-            // _dashTime -= Time.deltaTime;
-            // _dashCooldownTimer -= Time.deltaTime;
-            // _comboTimeWindow -= Time.deltaTime;
-
             _stateMachine.CurrentState.Update();
             CheckDash();
         }
@@ -71,8 +72,6 @@ namespace Simple2DRPG.Character
             yield return new WaitForSecondsRealtime(busySeconds);
             IsBusy = false;
         }
-
-
 
         private void CheckDash()
         {
@@ -89,20 +88,11 @@ namespace Simple2DRPG.Character
 
         public void TriggerAnim() => _stateMachine.CurrentState.TriggerFinishAnim();
 
-        // private void Attack()
-        // {
-        //     if (!_isGrounded) return;
+        protected override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
 
-        //     if (_comboTimeWindow < 0) _comboCounter = 0;
-        //     _isAttacking = true;
-        //     _comboTimeWindow = _comboTime;
-        // }
-
-        // public void AttackOver()
-        // {
-        //     _isAttacking = false;
-        //     _comboCounter++;
-        //     if (_comboCounter > 2) _comboCounter = 0;
-        // }
+            Gizmos.DrawWireSphere(attackCheck.position, attackCheckRadius);
+        }
     }
 }
