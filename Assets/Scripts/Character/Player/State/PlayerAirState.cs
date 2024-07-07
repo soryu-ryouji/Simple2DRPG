@@ -2,7 +2,7 @@ namespace Simple2DRPG.Character
 {
     public class PlayerAirState : PlayerState
     {
-        public PlayerAirState(PlayerController player, PlayerStateMachine stateMachine, string animBoolName)
+        public PlayerAirState(Player player, PlayerStateMachine stateMachine, string animBoolName)
             : base(player, stateMachine, animBoolName)
         {
         }

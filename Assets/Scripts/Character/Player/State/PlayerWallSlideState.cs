@@ -4,7 +4,7 @@ namespace Simple2DRPG.Character
 {
     public class PlayerWallSlideState : PlayerState
     {
-        public PlayerWallSlideState(PlayerController player, PlayerStateMachine stateMachine, string animBoolName)
+        public PlayerWallSlideState(Player player, PlayerStateMachine stateMachine, string animBoolName)
             : base(player, stateMachine, animBoolName)
         {
         }
