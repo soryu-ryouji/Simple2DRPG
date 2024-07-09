@@ -1,7 +1,6 @@
 using System.Collections;
 using Simple2DRPG.FX;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Simple2DRPG.Character
 {
@@ -10,6 +9,8 @@ namespace Simple2DRPG.Character
         public Animator Anim { get; private set; }
         public Rigidbody2D Rb { get; private set; }
         public CharacterFX Fx { get; private set; }
+
+        public CharacterState state;
 
         public int FaceDirection { get; private set; } = 1;
 
@@ -38,6 +39,7 @@ namespace Simple2DRPG.Character
             Anim = GetComponentInChildren<Animator>();
             Fx = GetComponent<CharacterFX>();
             Rb = GetComponent<Rigidbody2D>();
+            state = GetComponent<CharacterState>();
         }
 
         protected virtual void Start()
@@ -49,11 +51,10 @@ namespace Simple2DRPG.Character
             CollisionCheck();
         }
 
-        public void Damage(int damage)
+        public void DamageEffect()
         {
             Fx.StartCoroutine("FlashFX");
             StartCoroutine(HitKnockBack());
-            Debug.Log($"<color=yellow>{gameObject.name} was damaged: {damage}</color>");
         }
 
         protected virtual IEnumerator HitKnockBack()

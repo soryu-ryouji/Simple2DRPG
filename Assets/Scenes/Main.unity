@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 380326143}
   - component: {fileID: 380326147}
   - component: {fileID: 380326148}
+  - component: {fileID: 380326149}
   - component: {fileID: 380326145}
   - component: {fileID: 380326144}
   m_Layer: 8
@@ -449,6 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be1c2363c69f4e74a9e9a6321f4636f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: {fileID: 380326149}
   knockBackDirection: {x: 0, y: 0}
   konckBackDuration: 0.1
   _groundLayer:
@@ -484,6 +486,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitMat: {fileID: 2100000, guid: 269e2b122e97ace448dbab5e95b0e1d5, type: 2}
+--- !u!114 &380326149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380326142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf5400dd1c765db4b9c894152b1164f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamage: 5
+  maxHp: 100
 --- !u!1 &382622284
 GameObject:
   m_ObjectHideFlags: 0
@@ -3423,6 +3439,7 @@ GameObject:
   - component: {fileID: 1993257695}
   - component: {fileID: 1993257698}
   - component: {fileID: 1993257699}
+  - component: {fileID: 1993257700}
   - component: {fileID: 1993257696}
   - component: {fileID: 1993257697}
   m_Layer: 7
@@ -3525,6 +3542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6a0ffa8cb469343abb8aa33c284352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: {fileID: 1993257700}
   knockBackDirection: {x: 0, y: 0}
   konckBackDuration: 0
   _groundLayer:
@@ -3558,6 +3576,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitMat: {fileID: 2100000, guid: 269e2b122e97ace448dbab5e95b0e1d5, type: 2}
+--- !u!114 &1993257700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993257694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf5400dd1c765db4b9c894152b1164f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamage: 30
+  maxHp: 1000
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

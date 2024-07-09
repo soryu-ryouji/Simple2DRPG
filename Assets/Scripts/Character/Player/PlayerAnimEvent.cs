@@ -21,7 +21,10 @@ namespace Simple2DRPG.Character
             var colliders = Physics2D.OverlapCircleAll(_player.attackCheck.position, _player.attackCheckRadius);
             foreach (var item in colliders)
             {
-                if (item.GetComponent<Character>() != null) item.GetComponent<Character>().Damage(10);
+                if (item.GetComponent<CharacterState>() != null)
+                {
+                    _player.state.DoDamage(item.GetComponent<CharacterState>());
+                }
             }
         }
     }
